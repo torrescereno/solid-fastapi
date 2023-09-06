@@ -14,7 +14,7 @@ security = HTTPBearer()
 
 def decode_jwt(token: str, secret_key: str):
     try:
-        payload = jwt.decode(token, secret_key, algorithms=['HS256'])
+        payload = jwt.decode(token, secret_key, algorithms=["HS256"])
         return payload
     except jwt.JWTError:
         raise HTTPException(
@@ -28,11 +28,14 @@ def is_authenticated(credentials: HTTPAuthorizationCredentials = Depends(securit
 
     if credentials.scheme != "Bearer":
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Invalid authentication scheme.")
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Invalid authentication scheme.",
+        )
 
-    if 'role' not in payload or payload['role'] != 'admin':
+    if "role" not in payload or payload["role"] != "admin":
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="User does not have access to this endpoint"
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User does not have access to this endpoint",
         )
 
     return payload
